@@ -1,1 +1,9 @@
 <p>my-apps works!</p>
+
+<div *ngFor="let app of applications">
+  <h2>{{ app.company_name }}</h2>
+  <p>Status: {{ app.status }}</p>
+  <p>Date: {{ app.date | date }}</p>
+  <p>URL: <a href="{{ app.url }}">{{ app.url }}</a></p>
+  <!-- Add other properties as needed -->
+</div>
