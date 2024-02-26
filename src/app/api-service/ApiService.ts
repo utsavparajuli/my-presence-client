@@ -9,7 +9,7 @@ import { Application } from '../views/Application';
 export class ApiService {
 
   // Define the base URL of your backend API
-  private baseUrl = 'http://localhost:7241/api';
+  private baseUrl = 'https://localhost:7241/api';
 
   constructor(private http: HttpClient) { }
 
