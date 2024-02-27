@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from '../api-service/ApiService';
 import { Application } from '../views/Application';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +18,7 @@ export class MyAppsComponent implements OnInit {
   applications: Application[] = [];
   displayedColumns = ['date', 'company_name', 'status', 'url'];
   tableDataSource: MatTableDataSource<Application>;
+  isLoading: boolean = true; // Set to true initially, indicating data is loading
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,6 +30,9 @@ export class MyAppsComponent implements OnInit {
 
   ngOnInit() {
     this.loadApplications();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
     this.tableDataSource = new MatTableDataSource(this.applications);
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;

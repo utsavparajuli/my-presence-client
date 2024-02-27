@@ -62,7 +62,8 @@ import { MatTreeModule } from '@angular/material/tree';
     AppRoutingModule, BrowserAnimationsModule, MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
