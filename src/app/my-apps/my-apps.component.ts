@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '../api-service/ApiService';
 import { Application } from '../views/Application';
 import { HttpClient } from '@angular/common/http';
@@ -10,12 +13,35 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './my-apps.component.html',
   styleUrl: './my-apps.component.css'
 })
-export class MyAppsComponent {
+export class MyAppsComponent implements OnInit {
   applications: Application[] = [];
-  constructor(private apiService: ApiService, private http: HttpClient) { }
+  displayedColumns = ['date', 'company_name', 'status', 'url'];
+  tableDataSource: MatTableDataSource<Application>;
+
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private apiService: ApiService, private http: HttpClient) {
+    this.tableDataSource = new MatTableDataSource();
+  }
 
   ngOnInit() {
     this.loadApplications();
+    this.tableDataSource = new MatTableDataSource(this.applications);
+    this.tableDataSource.paginator = this.paginator;
+    this.tableDataSource.sort = this.sort;
+  }
+
+  //ngAfterViewInit() {
+  //  this.tableDataSource.paginator = this.paginator;
+  //  this.tableDataSource.sort = this.sort;
+  //}
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.tableDataSource.filter = filterValue;
   }
 
   loadApplications() {

@@ -1,9 +1,40 @@
-<p>my-apps works!</p>
+<p>Applications</p>
 
 <div *ngFor="let app of applications">
   <h2>{{ app.company_name }}</h2>
   <p>Status: {{ app.status }}</p>
   <p>Date: {{ app.date | date }}</p>
   <p>URL: <a href="{{ app.url }}">{{ app.url }}</a></p>
-  <!-- Add other properties as needed -->
 </div>
+
+<div>
+  <mat-table [dataSource]="applications" matSort>
+    <!-- Column definitions -->
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+      <mat-cell *matCellDef="let app"> {{ app.date }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="company_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Company Name </mat-header-cell>
+      <mat-cell *matCellDef="let app"> {{ app.company_name }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+      <mat-cell *matCellDef="let app"> {{ app.status }} </mat-cell>
+    </ng-container>
+    <!-- Define other columns similarly -->
+    <ng-container matColumnDef="url">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> URL </mat-header-cell>
+      <mat-cell *matCellDef="let app"> {{ app.url }} </mat-cell>
+    </ng-container>
+    <!-- Header and row definitions -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+</div>
+
+
+
+<!--Source: https://stackblitz.com/angular/dnbermjydavk?file=app%2Ftable-overview-example.ts,app%2Ftable-overview-example.html-->
