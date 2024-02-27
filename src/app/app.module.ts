@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -55,7 +56,7 @@ import { MatTreeModule } from '@angular/material/tree';
     NavBarComponent,
     HomeComponent,
     NotesComponent,
-    ForYouComponent
+    ForYouComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -63,7 +64,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatPaginatorModule,
     MatSortModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,6 +6,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from '../api-service/ApiService';
 import { Application } from '../views/Application';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -19,12 +21,23 @@ export class MyAppsComponent implements OnInit {
   displayedColumns = ['date', 'company_name', 'status', 'url'];
   tableDataSource: MatTableDataSource<Application>;
   isLoading: boolean = true; // Set to true initially, indicating data is loading
+  isPopupOpen: boolean = false;
+  //popupFormTemplate: TemplateRef<any>; // Define TemplateRef variable
 
+  newApplicationData = {
+    // Define properties for application data
+    date: Date.now,
+    companyName: '',
+    status: '',
+    url: ''
+    // Add more properties as needed
+  };
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('popupForm') popupFormTemplate: TemplateRef<any>;
 
-  constructor(private apiService: ApiService, private http: HttpClient) {
+  constructor(private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
     this.tableDataSource = new MatTableDataSource();
   }
 
@@ -42,6 +55,34 @@ export class MyAppsComponent implements OnInit {
   //  this.tableDataSource.paginator = this.paginator;
   //  this.tableDataSource.sort = this.sort;
   //}
+
+  openPopupForm(): void {
+    // Open the popup form
+    this.isPopupOpen = true;
+
+    // Open the MatDialog popup
+    const dialogRef = this.dialog.open(this.popupFormTemplate);
+    dialogRef.afterClosed().subscribe(() => {
+      // Reset the form fields and close the popup form
+      this.newApplicationData = {
+        // Define properties for application data
+        date: Date.now,
+        companyName: '',
+        status: '',
+        url: ''
+        // Add more properties as needed
+      };
+      this.isPopupOpen = false;
+    });
+  }
+
+  submitApplication(): void {
+    // Logic to submit the application
+    console.log("POPup opened");
+    console.log(this.newApplicationData);
+    // Once submitted, close the popup form
+    this.dialog.closeAll();
+  }
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
