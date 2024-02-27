@@ -24,13 +24,14 @@ export class MyAppsComponent implements OnInit {
   isPopupOpen: boolean = false;
   //popupFormTemplate: TemplateRef<any>; // Define TemplateRef variable
 
-  newApplicationData = {
+  newApplicationData: Application = {
     // Define properties for application data
-    date: Date.now,
-    companyName: '',
+    id: 0,
+    user_id: 1,
+    company_name: '',
     status: '',
-    url: ''
-    // Add more properties as needed
+    date: new Date(), // Assuming you want to set the current date
+    url: '',
   };
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -66,11 +67,12 @@ export class MyAppsComponent implements OnInit {
       // Reset the form fields and close the popup form
       this.newApplicationData = {
         // Define properties for application data
-        date: Date.now,
-        companyName: '',
+        id: 0,
+        user_id: 1,
+        company_name: '',
         status: '',
-        url: ''
-        // Add more properties as needed
+        date: new Date(), // Assuming you want to set the current date
+        url: '',
       };
       this.isPopupOpen = false;
     });
@@ -81,6 +83,7 @@ export class MyAppsComponent implements OnInit {
     console.log("POPup opened");
     console.log(this.newApplicationData);
     // Once submitted, close the popup form
+    this.addApplication(this.newApplicationData);
     this.dialog.closeAll();
   }
 
