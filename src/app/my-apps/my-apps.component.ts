@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,9 @@ import { Application } from '../views/Application';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-my-apps',
@@ -18,6 +21,12 @@ export class MyAppsComponent implements OnInit {
 
   isLoading: boolean = true;
   isPopupOpen: boolean = false;
+  isPopupEditOpen: boolean = false;
+  isEdit: boolean = false;
+  isAdd: boolean = true;
+
+  editingApp: Application;
+
   applications: Application[] = [];
 
   displayedColumns: string[] = [
@@ -34,21 +43,51 @@ export class MyAppsComponent implements OnInit {
     user_id: 1,
     company_name: '',
     status: '',
-    date: new Date(), // Assuming you want to set the current date
+    date: '', // Assuming you want to set the current date
     url: '',
   };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('popupForm') popupFormTemplate: TemplateRef<any>;
+  @ViewChild('tableContainer') tableContainer: ElementRef;
 
   pageSizes = [5, 10, 25];
 
-  constructor(private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
+  constructor(
+    private apiService: ApiService, private http: HttpClient,
+    public dialog: MatDialog, private elementRef: ElementRef,
+    private datePipe: DatePipe) {
   }
 
   ngOnInit() {
     this.loadApplications();
+  }
+
+  // Function to handle click events outside of the table rows
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+    // Check if the clicked element is the button or inside the button
+    const isButtonClicked = clickedElement.closest('.edit-button');
+    const isInsideEditPopup = clickedElement.closest('.edit-popup');
+    const isInsideAddPopup = clickedElement.closest('.add-popup');
+
+
+    if (!this.elementRef.nativeElement.contains(clickedElement) && !isButtonClicked && !isInsideEditPopup && !isInsideAddPopup) {
+      this.editingApp = null; // Reset the selected row
+      this.isEdit = false;
+      this.isAdd = true;
+      this.newApplicationData = {
+        // Define properties for application data
+        id: 0,
+        user_id: 1,
+        company_name: '',
+        status: '',
+        date: '', // Assuming you want to set the current date
+        url: '',
+      };
+    }
   }
 
   //ngAfterViewInit() {
@@ -60,10 +99,14 @@ export class MyAppsComponent implements OnInit {
     this.apiService.getApplications(1).subscribe(
       (result) => {
         this.applications = result;
-        this.tableDataSource = new MatTableDataSource(result);
-        this.tableDataSource.paginator = this.paginator;
+        result.forEach(app => {
+          // Format the date for each application
+          app.date = this.datePipe.transform(app.date, 'yyyy-MM-dd');
+        });
+          this.tableDataSource = new MatTableDataSource(result);
+          this.tableDataSource.paginator = this.paginator;
 
-        this.isLoading = false;
+          this.isLoading = false;
       },
       (error) => {
         console.error(error);
@@ -72,6 +115,12 @@ export class MyAppsComponent implements OnInit {
   }
 
 
+  toggleEdit(app: Application) {
+    this.newApplicationData = app;
+    console.log(app);
+    this.isEdit = true;
+    this.isAdd = false;
+  }
 
   openPopupForm(): void {
     // Open the popup form
@@ -90,10 +139,12 @@ export class MyAppsComponent implements OnInit {
         user_id: 1,
         company_name: '',
         status: '',
-        date: new Date(), // Assuming you want to set the current date
+        date: '', // Assuming you want to set the current date
         url: '',
       };
       this.isPopupOpen = false;
+      this.isEdit = false;
+      this.isAdd = true;
     });
   }
 

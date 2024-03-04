@@ -3,7 +3,7 @@ export interface Application {
   user_id: number;
   company_name: string;
   status: string;
-  date: Date;
+  date: string;
   url: string;
   // Add other properties as needed
 }

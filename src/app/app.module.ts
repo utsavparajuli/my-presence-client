@@ -47,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
+import { DatePipe } from '@angular/common';
 
 //contains the declarations related to the modules
 @NgModule({
@@ -64,9 +65,9 @@ import { MatTreeModule } from '@angular/material/tree';
     MatPaginatorModule,
     MatSortModule,
     MatInputModule,
-    MatProgressSpinnerModule, FormsModule
+    MatProgressSpinnerModule, FormsModule, MatIconModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,6 +1,13 @@
 <p>Applications</p>
 
-<button class="btn btn-primary" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
+<div *ngIf="isAdd">
+  <button class="btn btn-primary" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
+</div>
+<br />
+<br />
+<div *ngIf="isEdit">
+  <button class="btn btn-primary edit-button" mat-raised-button color="primary" (click)="openPopupForm()">Edit</button>
+</div>
 
 <br />
 <br />
@@ -11,11 +18,21 @@
 </div>
 
 
-<div [hidden]="isLoading">
+<div #tableContainer [hidden]="isLoading" >
   <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8">
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
       <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-      <td mat-cell *matCellDef="let app">{{ app[column] }}</td>
+      <td mat-cell *matCellDef="let app; let i = index" (click)="toggleEdit(app)" [class.selected]="newApplicationData === app">
+        {{ app[column] }}
+      </td>
+
+      <!--<ng-container *ngIf="column !== 'Update'; else editButton">
+  </ng-container>
+  <ng-template #editButton>
+    <button mat-icon-button (click)="addApplication(app)">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </ng-template>-->
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -28,8 +45,8 @@
 
 
 <ng-template #popupForm let-popupRef="dialogRef">
-  <div class="popup-container">
-    <h2 class="popup-header">Add Application</h2>
+  <div class="popup-container" [ngClass]="{ 'edit-popup': isEdit, 'add-popup': !isEdit }">
+    <h2 class="popup-header">{{isEdit ? 'Edit Application' : 'Add Application' }}</h2>
     <form (ngSubmit)="submitApplication()" #form="ngForm" class="popup-form">
       <!--Form fields for company name, date, and status-->
       <div class="form-group">
@@ -47,15 +64,14 @@
       <div class="form-group">
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status" [(ngModel)]="newApplicationData.status" required>
-          <option value="applied">Applied</option>
-          <option value="rejected">Rejected</option>
-          <option value="ghosted">Ghosted</option>
-          <option value="interview">Interview</option>
+          <option value="Applied">Applied</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Ghosted">Ghosted</option>
+          <option value="Interview">Interview</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">{{ isEdit ? 'Update' : 'Submit' }}</button>
     </form>
   </div>
 </ng-template>
-
 <!--Source: https://stackblitz.com/angular/dnbermjydavk?file=app%2Ftable-overview-example.ts,app%2Ftable-overview-example.html-->
