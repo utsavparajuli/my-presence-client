@@ -9,20 +9,24 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
-
-
 @Component({
   selector: 'app-my-apps',
   templateUrl: './my-apps.component.html',
   styleUrl: './my-apps.component.css'
 })
-export class MyAppsComponent implements OnInit, AfterViewInit {
-  applications: Application[] = [];
-  displayedColumns = ['date', 'company_name', 'status', 'url'];
-  tableDataSource: MatTableDataSource<Application>;
-  isLoading: boolean = true; // Set to true initially, indicating data is loading
+export class MyAppsComponent implements OnInit {
+  
+  isLoading: boolean = true;
   isPopupOpen: boolean = false;
-  //popupFormTemplate: TemplateRef<any>; // Define TemplateRef variable
+  applications: Application[] = [];
+
+  displayedColumns: string[] = [
+    'date',
+    'company_name',
+    'status',
+    'url'];
+
+  tableDataSource: MatTableDataSource<Application> = new MatTableDataSource();
 
   newApplicationData: Application = {
     // Define properties for application data
@@ -34,28 +38,41 @@ export class MyAppsComponent implements OnInit, AfterViewInit {
     url: '',
   };
 
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('popupForm') popupFormTemplate: TemplateRef<any>;
 
+  pageSizes = [5, 10, 25];
+  
   constructor(private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
-    this.tableDataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
     this.loadApplications();
-    //setTimeout(() => {
-    //  this.isLoading = false;
-    //}, 500);
-    this.tableDataSource = new MatTableDataSource(this.applications);
-    //this.tableDataSource.paginator = this.paginator;
-    //this.tableDataSource.sort = this.sort;
+    this.isLoading = false;
   }
 
-  ngAfterViewInit() {
-    this.tableDataSource.paginator = this.paginator;
-    this.tableDataSource.sort = this.sort;
+  //ngAfterViewInit() {
+  //  this.tableDataSource.paginator = this.paginator;
+  ////  this.tableDataSource.sort = this.sort;
+  //}
+
+  public loadApplications() {
+    this.apiService.getApplications(1).subscribe(
+      (result) => {
+        this.applications = result;
+        this.tableDataSource = new MatTableDataSource(result);
+        this.tableDataSource.paginator = this.paginator;
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
+
+  
 
   openPopupForm(): void {
     // Open the popup form
@@ -96,27 +113,7 @@ export class MyAppsComponent implements OnInit, AfterViewInit {
     this.tableDataSource.filter = filterValue;
   }
 
-  loadApplications() {
-    this.apiService.getApplications(1).subscribe(
-      (result) => {
-        this.applications = result;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-    //this.http.get(`https://localhost:7241/Application?uid=1`).subscribe(
-    //  (result) => {
-    //    console.log("response got");
-    //    this.applications = result;
-    //  },
-    //  (error) => {
-    //    console.error(error);
-    //  }
-    //);
 
-  }
 
   addApplication(application: any) {
     this.apiService.addApplication(application).subscribe(() => {
@@ -135,4 +132,6 @@ export class MyAppsComponent implements OnInit, AfterViewInit {
       this.loadApplications();
     });
   }
+
+
 }
