@@ -153,7 +153,11 @@ export class MyAppsComponent implements OnInit {
     console.log("POPup opened");
     console.log(this.newApplicationData);
     // Once submitted, close the popup form
-    this.addApplication(this.newApplicationData);
+    if (this.isEdit) {
+      this.updateApplication(this.newApplicationData.id, this.newApplicationData);
+    } else {
+      this.addApplication(this.newApplicationData);
+    }
     this.dialog.closeAll();
   }
 
