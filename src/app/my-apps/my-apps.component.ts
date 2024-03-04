@@ -69,7 +69,7 @@ export class MyAppsComponent implements OnInit {
   onDocumentClick(event: MouseEvent) {
     const clickedElement = event.target as HTMLElement;
     // Check if the clicked element is the button or inside the button
-    const isButtonClicked = clickedElement.closest('.edit-button');
+    const isButtonClicked = clickedElement.closest('.edit-box');
     const isInsideEditPopup = clickedElement.closest('.edit-popup');
     const isInsideAddPopup = clickedElement.closest('.add-popup');
 
@@ -155,6 +155,10 @@ export class MyAppsComponent implements OnInit {
     // Once submitted, close the popup form
     this.addApplication(this.newApplicationData);
     this.dialog.closeAll();
+  }
+
+  deleteClick(): void {
+    this.deleteApplication(this.newApplicationData.id);
   }
 
   applyFilter(filterValue: string) {

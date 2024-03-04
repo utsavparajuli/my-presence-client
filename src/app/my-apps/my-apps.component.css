@@ -67,3 +67,25 @@
   background-color: blue;
   color: white; /* Optional: Set text color to white for better visibility */
 }
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Add margin to separate from other content */
+}
+
+.add-button {
+  background-color: green;
+}
+
+.edit-box {
+  display: flex;
+}
+
+.delete-button {
+  background-color: red;
+}
+
+.edit-box > button {
+  margin-right: 10px; /* Adjust spacing between buttons */
+}

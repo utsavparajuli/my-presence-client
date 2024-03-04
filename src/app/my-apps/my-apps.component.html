@@ -1,13 +1,25 @@
 <p>Applications</p>
 
-<div *ngIf="isAdd">
-  <button class="btn btn-primary" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
+<!--<div *ngIf="isAdd">
+  <button class="btn btn-primary" mat-raised-button color="green" (click)="openPopupForm()">Add</button>
 </div>
 <br />
 <br />
 <div *ngIf="isEdit">
-  <button class="btn btn-primary edit-button" mat-raised-button color="primary" (click)="openPopupForm()">Edit</button>
+  <button class="btn btn-primary edit-button" mat-raised-button color="yellow" (click)="openPopupForm()">Edit</button>
 </div>
+
+<div *ngIf="isEdit">
+  <button class="btn btn-primary delete-button" mat-raised-button color="red" (click)="openPopupForm()">Delete</button>
+</div>-->
+<div class="button-container">
+  <button *ngIf="isAdd" class="btn btn-primary add-button" mat-raised-button (click)="openPopupForm()">Add</button>
+  <div class="edit-box" *ngIf="isEdit">
+    <button class="btn btn-primary edit-button" mat-raised-button (click)="openPopupForm()">Edit</button>
+    <button class="btn btn-primary delete-button" mat-raised-button (click)="deleteClick()">Delete</button>
+  </div>
+</div>
+
 
 <br />
 <br />
@@ -18,7 +30,7 @@
 </div>
 
 
-<div #tableContainer [hidden]="isLoading" >
+<div #tableContainer [hidden]="isLoading">
   <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8">
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
       <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
@@ -27,12 +39,12 @@
       </td>
 
       <!--<ng-container *ngIf="column !== 'Update'; else editButton">
-  </ng-container>
-  <ng-template #editButton>
-    <button mat-icon-button (click)="addApplication(app)">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </ng-template>-->
+      </ng-container>
+      <ng-template #editButton>
+        <button mat-icon-button (click)="addApplication(app)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-template>-->
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
