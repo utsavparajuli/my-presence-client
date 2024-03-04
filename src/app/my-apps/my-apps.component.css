@@ -18,3 +18,33 @@
   overflow: auto;
   max-height: 500px;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100%; /* Set the height of the container */
+}
+
+.popup-container {
+  /*width: 400px;*/ /* Set the desired width */
+  padding: 20px; /* Add padding for better spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust height as needed */
+}
+
+.popup-header {
+  margin-bottom: 20px; /* Add margin to separate header from form */
+}
+
+.popup-form {
+  width: 80%; /* Set the width of the form */
+  max-width: 400px; /* Optional: Set maximum width to prevent form from stretching too wide */
+}
+
+.popup-form .btn {
+  margin-top: 20px; /* Add margin to the top of the button */
+}

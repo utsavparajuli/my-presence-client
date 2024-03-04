@@ -1,8 +1,11 @@
 <p>Applications</p>
 
-<button mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
+<button class="btn btn-primary" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
 
-<div *ngIf="isLoading; else table">
+<br />
+<br />
+<br />
+<div class="loading-container" *ngIf="isLoading; else table">
   <!-- Show loading spinner while data is loading -->
   <mat-spinner diameter="50" color="primary"></mat-spinner>
 </div>
@@ -38,32 +41,34 @@
 </ng-template>
 
 <ng-template #popupForm let-popupRef="dialogRef">
-  <h2>Add Application</h2>
-  <form (ngSubmit)="submitApplication()" #form="ngForm">
-    <!-- Form fields for company name, date, and status -->
-    <div class="form-group">
-      <label for="companyName">Company Name</label>
-      <input type="text" class="form-control" id="companyName" name="companyName" [(ngModel)]="newApplicationData.company_name" required>
-    </div>
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newApplicationData.date" required>
-    </div>
-    <div class="form-group">
-      <label for="url">URL</label>
-      <input type="text" class="form-control" id="url" name="url" [(ngModel)]="newApplicationData.url">
-    </div>
-    <div class="form-group">
-      <label for="status">Status</label>
-      <select class="form-control" id="status" name="status" [(ngModel)]="newApplicationData.status" required>
-        <option value="applied">Applied</option>
-        <option value="rejected">Rejected</option>
-        <option value="ghosted">Ghosted</option>
-        <option value="interview">Interview</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <div class="popup-container">
+    <h2 class="popup-header">Add Application</h2>
+    <form (ngSubmit)="submitApplication()" #form="ngForm" class="popup-form">
+      <!-- Form fields for company name, date, and status -->
+      <div class="form-group">
+        <label for="companyName">Company Name</label>
+        <input type="text" class="form-control" id="companyName" name="companyName" [(ngModel)]="newApplicationData.company_name" required>
+      </div>
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newApplicationData.date" required>
+      </div>
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input type="text" class="form-control" id="url" name="url" [(ngModel)]="newApplicationData.url">
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select class="form-control" id="status" name="status" [(ngModel)]="newApplicationData.status" required>
+          <option value="applied">Applied</option>
+          <option value="rejected">Rejected</option>
+          <option value="ghosted">Ghosted</option>
+          <option value="interview">Interview</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
 </ng-template>
 
 <!--Source: https://stackblitz.com/angular/dnbermjydavk?file=app%2Ftable-overview-example.ts,app%2Ftable-overview-example.html-->

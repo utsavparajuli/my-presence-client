@@ -62,7 +62,10 @@ export class MyAppsComponent implements OnInit {
     this.isPopupOpen = true;
 
     // Open the MatDialog popup
-    const dialogRef = this.dialog.open(this.popupFormTemplate);
+    const dialogRef = this.dialog.open(this.popupFormTemplate, {
+      height: '400px',
+      width: '600px',
+    });
     dialogRef.afterClosed().subscribe(() => {
       // Reset the form fields and close the popup form
       this.newApplicationData = {
