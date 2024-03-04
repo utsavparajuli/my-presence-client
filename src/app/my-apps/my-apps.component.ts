@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './my-apps.component.html',
   styleUrl: './my-apps.component.css'
 })
-export class MyAppsComponent implements OnInit {
+export class MyAppsComponent implements OnInit, AfterViewInit {
   applications: Application[] = [];
   displayedColumns = ['date', 'company_name', 'status', 'url'];
   tableDataSource: MatTableDataSource<Application>;
@@ -34,7 +34,7 @@ export class MyAppsComponent implements OnInit {
     url: '',
   };
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('popupForm') popupFormTemplate: TemplateRef<any>;
 
@@ -44,18 +44,18 @@ export class MyAppsComponent implements OnInit {
 
   ngOnInit() {
     this.loadApplications();
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    //setTimeout(() => {
+    //  this.isLoading = false;
+    //}, 500);
     this.tableDataSource = new MatTableDataSource(this.applications);
+    //this.tableDataSource.paginator = this.paginator;
+    //this.tableDataSource.sort = this.sort;
+  }
+
+  ngAfterViewInit() {
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;
   }
-
-  //ngAfterViewInit() {
-  //  this.tableDataSource.paginator = this.paginator;
-  //  this.tableDataSource.sort = this.sort;
-  //}
 
   openPopupForm(): void {
     // Open the popup form
@@ -100,6 +100,7 @@ export class MyAppsComponent implements OnInit {
     this.apiService.getApplications(1).subscribe(
       (result) => {
         this.applications = result;
+        this.isLoading = false;
       },
       (error) => {
         console.error(error);
