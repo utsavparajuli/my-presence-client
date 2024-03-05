@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MyAppsComponent } from './my-apps/my-apps.component';
@@ -13,7 +12,6 @@ import { NotesComponent } from './notes/notes.component';
 import { ForYouComponent } from './for-you/for-you.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
-
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -108,15 +106,6 @@ export class DemoMaterialModule { }
     AppRoutingModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, DemoMaterialModule, MatNativeDateModule
 
   ],
-  //imports: [
-  //  BrowserModule, HttpClientModule,
-  //  AppRoutingModule, BrowserAnimationsModule, MatTableModule,
-  //  MatPaginatorModule,
-  //  MatSortModule,
-  //  MatInputModule,
-  //  MatProgressSpinnerModule, FormsModule, MatIconModule, ReactiveFormsModule
-
-  //],
   providers: [DatePipe],
   bootstrap: [AppComponent],
 })

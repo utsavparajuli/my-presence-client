@@ -1,16 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, TemplateRef, AfterViewInit, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, HostListener } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from '../api-service/ApiService';
 import { Application } from '../views/Application';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Observable } from 'rxjs';
-
 
 @Component({
   selector: 'app-my-apps',
@@ -19,42 +15,39 @@ import { Observable } from 'rxjs';
 })
 export class MyAppsComponent implements OnInit {
 
-  isLoading: boolean = true;
-  isPopupOpen: boolean = false;
-  isPopupEditOpen: boolean = false;
-  isEdit: boolean = false;
-  isAdd: boolean = true;
-
-  editingApp: Application;
-
-  applications: Application[] = [];
-
-  displayedColumns: string[] = [
-    'date',
-    'company_name',
-    'url',
-    'status',
-    'update'];
-
-  tableDataSource: MatTableDataSource<Application> = new MatTableDataSource();
+  isLoading:        boolean = true;
+  isPopupOpen:      boolean = false;
+  isPopupEditOpen:  boolean = false;
+  isEdit:           boolean = false;
+  isAdd:            boolean = true;
 
   newApplicationData: Application = {
-    // Define properties for application data
+    // Define properties for application data used for new apps and editing apps
     id: 0,
     user_id: 1,
     company_name: '',
     status: '',
-    date: '', // Assuming you want to set the current date
+    date: '',
     url: '',
     update: ''
   };
+
+  pageSizes = [5, 10, 25];
+  displayedColumns: string[] = ['date', 'company_name', 'url', 'status', 'update'];
+  columnDisplayNames: { [key: string]: string } = {
+    'date':         'Date',
+    'company_name': 'Company',
+    'url':          'URL',
+    'status':       'Status',
+    'update':       'Update'
+  };
+
+  tableDataSource: MatTableDataSource<Application> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('popupForm') popupFormTemplate: TemplateRef<any>;
   @ViewChild('tableContainer') tableContainer: ElementRef;
-
-  pageSizes = [5, 10, 25];
 
   constructor(
     private apiService: ApiService, private http: HttpClient,
@@ -62,6 +55,7 @@ export class MyAppsComponent implements OnInit {
     private datePipe: DatePipe) {
   }
 
+  //loads the applications which is an api call
   ngOnInit() {
     this.loadApplications();
   }
@@ -77,31 +71,24 @@ export class MyAppsComponent implements OnInit {
 
 
     if (!this.elementRef.nativeElement.contains(clickedElement) && !isButtonClicked && !isInsideEditPopup && !isInsideAddPopup) {
-      this.editingApp = null; // Reset the selected row
       this.isEdit = false;
       this.isAdd = true;
       this.newApplicationData = {
-        // Define properties for application data
         id: 0,
         user_id: 1,
         company_name: '',
         status: '',
-        date: '', // Assuming you want to set the current date
+        date: '',
         url: '',
         update: ''
       };
     }
   }
 
-  //ngAfterViewInit() {
-  //  this.tableDataSource.paginator = this.paginator;
-  ////  this.tableDataSource.sort = this.sort;
-  //}
-
+  //loadig applications
   public loadApplications() {
     this.apiService.getApplications(1).subscribe(
       (result) => {
-        this.applications = result;
         result.forEach(app => {
           // Format the date for each application
           app.date = this.datePipe.transform(app.date, 'yyyy-MM-dd');
@@ -109,7 +96,6 @@ export class MyAppsComponent implements OnInit {
           this.tableDataSource = new MatTableDataSource(result);
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;
-
           this.isLoading = false;
       },
       (error) => {
@@ -118,10 +104,9 @@ export class MyAppsComponent implements OnInit {
     );
   }
 
-
+  //function that executes when edit is pressed
   toggleEdit(app: Application) {
     this.newApplicationData = app;
-    console.log(app);
     this.isEdit = true;
     this.isAdd = false;
   }
@@ -138,12 +123,11 @@ export class MyAppsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       // Reset the form fields and close the popup form
       this.newApplicationData = {
-        // Define properties for application data
         id: 0,
         user_id: 1,
         company_name: '',
         status: '',
-        date: '', // Assuming you want to set the current date
+        date: '',
         url: '',
         update: ''
       };
@@ -153,11 +137,9 @@ export class MyAppsComponent implements OnInit {
     });
   }
 
+  // Logic to submit the application
+  // Once submitted, close the popup form
   submitApplication(): void {
-    // Logic to submit the application
-    console.log("POPup opened");
-    console.log(this.newApplicationData);
-    // Once submitted, close the popup form
     if (this.isEdit) {
       this.updateApplication(this.newApplicationData.id, this.newApplicationData);
     } else {
@@ -166,20 +148,20 @@ export class MyAppsComponent implements OnInit {
     this.dialog.closeAll();
   }
 
+  //On deletion click call the api service
   deleteClick(): void {
     this.deleteApplication(this.newApplicationData.id);
     this.isEdit = false;
     this.isAdd = true;
   }
 
+  //Filter for the table
   applyFilter(event: Event) {
     let filterValue: string = (event.target as HTMLInputElement).value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.tableDataSource.filter = filterValue;
   }
-
-
 
   addApplication(application: any) {
     this.apiService.addApplication(application).subscribe(() => {
@@ -199,16 +181,16 @@ export class MyAppsComponent implements OnInit {
     });
   }
 
+  //Helper for color coding the rows
   getRowStyle(app: any): any {
     if (app.status === 'Rejected') {
       return { 'background-color': '#FFB5B6' };
     } else if (app.status === 'Interview') {
-      return { 'background-color': '#567D6C' };
+      return { 'background-color': '#A8D6AD' };
     } else if (app.status === 'Ghosted') {
-      return { 'background-color': '#74567D' };
+      return { 'background-color': '#CEB5EB' };
     } else {
       return {};
     }
   }
-
 }

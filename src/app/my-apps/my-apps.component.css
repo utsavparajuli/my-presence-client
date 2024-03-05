@@ -68,14 +68,12 @@
   color: white; /* Optional: Set text color to white for better visibility */
 }
 
-.button-container {
-  display: flex;
-  justify-content: center; /* Center the buttons horizontally */
-  margin-top: 20px; /* Add margin to separate from other content */
-}
-
 .add-button {
   background-color: green;
+}
+
+.bold-column {
+  font-weight: bold;
 }
 
 .edit-box {
@@ -90,15 +88,26 @@
   margin-right: 10px; /* Adjust spacing between buttons */
 }
 
-.filter-header {
-  padding: 8px 24px 0;
+.table-helper-container {
+  display: flex; /* Use flexbox */
+  align-items: center; /* Align items vertically */
 }
 
-/*.custom-filter-field {
-  width: 500px;*/ /* Adjust the width as per your requirement */
-/*}*/
+.filter-header {
+  width: calc(100% - 10px); /* Set explicit width */
 
-/*.mat-form-field {
-  font-size: 14px;
-  width: 100%;
-}*/
+  /*flex: 1;*/ /* Allow the filter header to grow and fill available space */
+  margin-right: auto; /* Add some space between the two elements */
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.button-container {
+  width: calc(10% - 10px); /* Set explicit width */
+  display: flex; /* Use flexbox */
+  align-items: center; /* Align items vertically */
+  margin-left: auto;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+

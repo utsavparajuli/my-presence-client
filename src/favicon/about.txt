@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Passero One
+- Font Author: Copyright (c) 2011, Sorkin Type Co (www.sorkintype.com eben@eyebytes.com) with Reserved Font Names "Passero"
+- Font Source: https://fonts.gstatic.com/s/passeroone/v26/JTUTjIko8DOq5FeaeEAjgE5B5Arr-s50.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

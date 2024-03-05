@@ -1,15 +1,5 @@
 <h2 class="component-header">My Applications</h2>
 
-
-<div class="button-container">
-  <button *ngIf="isAdd" class="btn btn-primary add-button" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
-  <div class="edit-box" *ngIf="isEdit">
-    <button class="btn btn-primary edit-button" mat-raised-button color="accent" (click)="openPopupForm()">Edit</button>
-    <button class="btn btn-primary delete-button" mat-raised-button color="warn" (click)="deleteClick()">Delete</button>
-  </div>
-</div>
-
-
 <br />
 <br />
 <br />
@@ -18,18 +8,28 @@
   <mat-spinner diameter="50" color="primary"></mat-spinner>
 </div>
 
-
-
+<!--Table container-->
 <div #tableContainer [hidden]="isLoading">
-  <div class="filter-header">
-    <mat-form-field [style.width.%]="50" appearance="outline">
-      <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)">
-    </mat-form-field>
+  <div class="table-helper-container">
+    <div class="filter-header">
+      <mat-form-field [style.width.%]="50" appearance="outline">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)">
+      </mat-form-field>
+    </div>
+
+    <div class="button-container">
+      <button *ngIf="isAdd" class="btn btn-primary add-button" mat-raised-button color="primary" (click)="openPopupForm()">Add</button>
+      <div class="edit-box" *ngIf="isEdit">
+        <button class="btn btn-primary edit-button" mat-raised-button color="accent" (click)="openPopupForm()">Edit</button>
+        <button class="btn btn-primary delete-button" mat-raised-button color="warn" (click)="deleteClick()">Delete</button>
+      </div>
+    </div>
   </div>
+
   <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="bold-column">{{ columnDisplayNames[column] }}</th>
       <td mat-cell *matCellDef="let app; let i = index" (click)="toggleEdit(app)" [class.selected]="newApplicationData === app" [ngStyle]="getRowStyle(app)">
         <ng-container *ngIf="column == 'url'; else notUrl">
           <a [href]="app[column]" target="_blank">{{ app[column] }}</a>
@@ -38,10 +38,7 @@
           {{ app[column] }}
         </ng-template>
       </td>
-
-
     </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let approw; columns: displayedColumns"></tr>
   </table>
@@ -49,8 +46,7 @@
                  showFirstLastButtons></mat-paginator>
 </div>
 
-
-
+<!--Popup container-->
 <ng-template #popupForm let-popupRef="dialogRef">
   <div class="popup-container" [ngClass]="{ 'edit-popup': isEdit, 'add-popup': !isEdit }">
     <h2 class="popup-header">{{isEdit ? 'Edit Application' : 'Add Application' }}</h2>
@@ -85,4 +81,3 @@
     </form>
   </div>
 </ng-template>
-<!--Source: https://stackblitz.com/angular/dnbermjydavk?file=app%2Ftable-overview-example.ts,app%2Ftable-overview-example.html-->
