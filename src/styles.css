@@ -2,3 +2,6 @@
 /* src/styles.css */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';
 */
+.component-header {
+  padding: 8px 24px 16px;
+}

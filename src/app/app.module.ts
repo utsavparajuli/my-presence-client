@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { NotesComponent } from './notes/notes.component';
 import { ForYouComponent } from './for-you/for-you.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -49,6 +50,49 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { DatePipe } from '@angular/common';
 
+@NgModule({
+  exports: [
+    CdkTableModule,
+    CdkTreeModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+  ]
+})
+export class DemoMaterialModule { }
+
 //contains the declarations related to the modules
 @NgModule({
   declarations: [
@@ -61,12 +105,18 @@ import { DatePipe } from '@angular/common';
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, BrowserAnimationsModule, MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatProgressSpinnerModule, FormsModule, MatIconModule
+    AppRoutingModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, DemoMaterialModule, MatNativeDateModule
+
   ],
+  //imports: [
+  //  BrowserModule, HttpClientModule,
+  //  AppRoutingModule, BrowserAnimationsModule, MatTableModule,
+  //  MatPaginatorModule,
+  //  MatSortModule,
+  //  MatInputModule,
+  //  MatProgressSpinnerModule, FormsModule, MatIconModule, ReactiveFormsModule
+
+  //],
   providers: [DatePipe],
   bootstrap: [AppComponent],
 })

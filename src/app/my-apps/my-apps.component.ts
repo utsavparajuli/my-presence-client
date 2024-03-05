@@ -108,6 +108,7 @@ export class MyAppsComponent implements OnInit {
         });
           this.tableDataSource = new MatTableDataSource(result);
           this.tableDataSource.paginator = this.paginator;
+          this.tableDataSource.sort = this.sort;
 
           this.isLoading = false;
       },
@@ -167,9 +168,12 @@ export class MyAppsComponent implements OnInit {
 
   deleteClick(): void {
     this.deleteApplication(this.newApplicationData.id);
+    this.isEdit = false;
+    this.isAdd = true;
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter(event: Event) {
+    let filterValue: string = (event.target as HTMLInputElement).value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.tableDataSource.filter = filterValue;

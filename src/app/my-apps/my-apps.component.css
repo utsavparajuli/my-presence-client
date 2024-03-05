@@ -89,3 +89,16 @@
 .edit-box > button {
   margin-right: 10px; /* Adjust spacing between buttons */
 }
+
+.filter-header {
+  padding: 8px 24px 0;
+}
+
+/*.custom-filter-field {
+  width: 500px;*/ /* Adjust the width as per your requirement */
+/*}*/
+
+/*.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}*/
