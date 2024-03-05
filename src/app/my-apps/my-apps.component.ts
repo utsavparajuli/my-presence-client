@@ -32,8 +32,9 @@ export class MyAppsComponent implements OnInit {
   displayedColumns: string[] = [
     'date',
     'company_name',
+    'url',
     'status',
-    'url'];
+    'update'];
 
   tableDataSource: MatTableDataSource<Application> = new MatTableDataSource();
 
@@ -45,6 +46,7 @@ export class MyAppsComponent implements OnInit {
     status: '',
     date: '', // Assuming you want to set the current date
     url: '',
+    update: ''
   };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -86,6 +88,7 @@ export class MyAppsComponent implements OnInit {
         status: '',
         date: '', // Assuming you want to set the current date
         url: '',
+        update: ''
       };
     }
   }
@@ -141,6 +144,7 @@ export class MyAppsComponent implements OnInit {
         status: '',
         date: '', // Assuming you want to set the current date
         url: '',
+        update: ''
       };
       this.isPopupOpen = false;
       this.isEdit = false;
@@ -191,5 +195,16 @@ export class MyAppsComponent implements OnInit {
     });
   }
 
+  getRowStyle(app: any): any {
+    if (app.status === 'Rejected') {
+      return { 'background-color': '#FFB5B6' };
+    } else if (app.status === 'Interview') {
+      return { 'background-color': '#567D6C' };
+    } else if (app.status === 'Ghosted') {
+      return { 'background-color': '#74567D' };
+    } else {
+      return {};
+    }
+  }
 
 }

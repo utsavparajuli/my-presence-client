@@ -5,5 +5,6 @@ export interface Application {
   status: string;
   date: string;
   url: string;
+  update: string;
   // Add other properties as needed
 }
